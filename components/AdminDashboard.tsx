@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useRef } from 'react';
 import { Sidebar } from './Sidebar';
 import { DataTable } from './DataTable';
@@ -23,12 +22,12 @@ interface AdminDashboardProps {
 }
 
 const viewConfig = {
-    dashboard: { title: 'Dashboard', icon: ChartPieIcon },
-    jobSeekers: { title: 'Pencari Kerja', icon: UsersIcon },
-    trainingParticipants: { title: 'Peserta Pelatihan', icon: UserGroupIcon },
-    informalWorkers: { title: 'Pekerja Informal', icon: BriefcaseIcon },
-    vacancies: { title: 'Lowongan Kerja', icon: DocumentTextIcon },
-    companies: { title: 'Perusahaan', icon: BuildingOfficeIcon },
+    dashboard: { title: 'Dashboard', icon: ChartPieIcon, gradient: 'from-sky-500 to-indigo-500' },
+    jobSeekers: { title: 'Pencari Kerja', icon: UsersIcon, gradient: 'from-blue-500 to-cyan-500' },
+    trainingParticipants: { title: 'Peserta Pelatihan', icon: UserGroupIcon, gradient: 'from-violet-500 to-purple-500' },
+    informalWorkers: { title: 'Pekerja Informal', icon: BriefcaseIcon, gradient: 'from-emerald-500 to-green-500' },
+    vacancies: { title: 'Lowongan Kerja', icon: DocumentTextIcon, gradient: 'from-amber-500 to-orange-500' },
+    companies: { title: 'Perusahaan', icon: BuildingOfficeIcon, gradient: 'from-slate-600 to-gray-700' },
 };
 
 const columnConfig: Record<AdminView, { key: string, header: string }[]> = {
@@ -69,21 +68,27 @@ const columnConfig: Record<AdminView, { key: string, header: string }[]> = {
 
 const DashboardContent: React.FC<{ counts: Record<string, number> }> = ({ counts }) => (
     <div className="p-8">
-        <h2 className="text-3xl font-bold text-slate-800 mb-6">Dashboard</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Object.entries(counts).map(([key, value]) => (
-                <div key={key} className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                    <div className="flex items-center">
-                        <div className="p-3 bg-blue-100 rounded-full">
-                           {React.createElement(viewConfig[key as AdminView]?.icon || ChartPieIcon, { className: "h-6 w-6 text-blue-600" })}
+        <h2 className="text-3xl font-bold text-slate-800 mb-8">Dashboard Ringkasan</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Object.entries(counts).map(([key, value]) => {
+                const config = viewConfig[key as AdminView];
+                if (!config) return null;
+                return (
+                    <div key={key} className={`relative bg-gradient-to-br ${config.gradient} p-6 rounded-xl shadow-lg text-white overflow-hidden transform hover:-translate-y-1 transition-transform duration-300`}>
+                        <div className="relative z-10">
+                            <div className="flex items-center justify-between">
+                                <p className="text-lg font-semibold">{config.title}</p>
+                                {React.createElement(config.icon, { className: "h-8 w-8 text-white opacity-70" })}
+                            </div>
+                            <p className="text-4xl font-bold mt-4">{value}</p>
+                            <p className="text-sm opacity-80 mt-1">Total Data</p>
                         </div>
-                        <div className="ml-4">
-                            <p className="text-sm font-medium text-slate-500">{viewConfig[key as AdminView]?.title}</p>
-                            <p className="text-2xl font-bold text-slate-800">{value}</p>
+                         <div className="absolute -bottom-4 -right-4">
+                           {React.createElement(config.icon, { className: "h-24 w-24 text-white opacity-10 transform rotate-12" })}
                         </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     </div>
 );
