@@ -1,0 +1,5 @@
+{
+  "name": "Sistem Informasi Ketenagakerjaan",
+  "description": "Aplikasi database untuk mengelola data ketenagakerjaan termasuk pencari kerja, pelatihan, pekerja informal, lowongan kerja, dan perusahaan, dengan fitur konsultasi online untuk masyarakat.",
+  "requestFramePermissions": []
+}
